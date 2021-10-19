@@ -6,9 +6,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include <wtypes.h>
+// TODO: non-standard - replace getch() and remove this include
+#include <conio.h>
 
 #include "bulcommn.h"
+#include "lbfileio.h"
 #include "keycodes.h"
 #include "gwsaved_private.h"
 
@@ -281,18 +283,6 @@ int getUsr16bitUValueTo(int minVal,int maxVal,unsigned char *dest_ptr)
     write_int16_le_buf(dest_ptr,newval&65535);
 }
 
-int saveStructureToFile(char *samplename,char *src_ptr,unsigned long length)
-{
-         printf("\nEnter destination file name, ie \"%s\":",samplename);
-         char newname[255];
-         int i;
-         for (i=0;i<255;i++)
-             newname[i]=0;
-         scanf("%s",newname);
-         if ((strlen(newname)<1)||(newname[0]<'!')) strcpy(newname,samplename);
-         return saveStructureToDefFile(newname,src_ptr,length);
-}
-
 int saveStructureToDefFile(char *fname,char *src_ptr,unsigned long length)
 {
          FILE *expfp=fopen(fname,"wb");
@@ -307,16 +297,16 @@ int saveStructureToDefFile(char *fname,char *src_ptr,unsigned long length)
          return 0;
 }
 
-int loadStructureFromFile(char *samplename,char *dest_ptr,unsigned long length)
+int saveStructureToFile(char *samplename,char *src_ptr,unsigned long length)
 {
-         printf("\nEnter source file name, ie \"%s\":",samplename);
+         printf("\nEnter destination file name, ie \"%s\":",samplename);
          char newname[255];
          int i;
          for (i=0;i<255;i++)
              newname[i]=0;
          scanf("%s",newname);
          if ((strlen(newname)<1)||(newname[0]<'!')) strcpy(newname,samplename);
-         return loadStructureFromDefFile(newname,dest_ptr,length);
+         return saveStructureToDefFile(newname,src_ptr,length);
 }
 
 int loadStructureFromDefFile(char *fname,char *dest_ptr,unsigned long length)
@@ -331,6 +321,18 @@ int loadStructureFromDefFile(char *fname,char *dest_ptr,unsigned long length)
          fclose(impfp);
          printf("\nStructure loaded from \"%s\".\n",fname);
          return 0;
+}
+
+int loadStructureFromFile(char *samplename,char *dest_ptr,unsigned long length)
+{
+         printf("\nEnter source file name, ie \"%s\":",samplename);
+         char newname[255];
+         int i;
+         for (i=0;i<255;i++)
+             newname[i]=0;
+         scanf("%s",newname);
+         if ((strlen(newname)<1)||(newname[0]<'!')) strcpy(newname,samplename);
+         return loadStructureFromDefFile(newname,dest_ptr,length);
 }
 
 void getSavesComments(char *dest_names,char *exist_table)

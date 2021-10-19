@@ -1,7 +1,7 @@
 [Project]
 FileName=gwsaved.dev
 Name=GWSavEd
-UnitCount=3
+UnitCount=5
 Type=1
 Ver=1
 ObjFiles=
@@ -10,8 +10,8 @@ Libs=
 PrivateResource=gwsaved_private.rc
 ResourceIncludes=
 MakeIncludes=
-Compiler=
-CppCompiler=
+Compiler=-DBUILD_SINGLE_@@_
+CppCompiler=-DBUILD_SINGLE_@@_
 Linker=
 IsCpp=0
 Icon=gwsaved.ico
@@ -41,17 +41,17 @@ BuildCmd=
 
 [VersionInfo]
 Major=1
-Minor=3
-Release=1
-Build=4
+Minor=4
+Release=0
+Build=14
 LanguageID=2057
 CharsetID=1252
-CompanyName=
+CompanyName=Open-Source
 FileVersion=
-FileDescription=Bullfrog Gene Wars Savegame Editor
+FileDescription=Bullfrog GeneWars Savegame Editor
 InternalName=
-LegalCopyright=
-LegalTrademarks=
+LegalCopyright=Public Domain
+LegalTrademarks=Open-Source
 OriginalFilename=
 ProductName=Bullfrog game tools
 ProductVersion=
@@ -69,6 +69,26 @@ BuildCmd=
 
 [Unit3]
 FileName=bulcommn.h
+CompileCpp=0
+Folder=GWSavEd
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=lbfileio.h
+CompileCpp=0
+Folder=GWSavEd
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit5]
+FileName=lbfileio.c
 CompileCpp=0
 Folder=GWSavEd
 Compile=1

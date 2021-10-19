@@ -5,14 +5,14 @@ CPP  = g++.exe
 CC   = gcc.exe
 WINDRES = windres.exe
 RES  = gwsaved_private.res
-OBJ  = gwsaved.o bulcommn.o $(RES)
-LINKOBJ  = gwsaved.o bulcommn.o $(RES)
+OBJ  = gwsaved.o bulcommn.o lbfileio.o $(RES)
+LINKOBJ  = gwsaved.o bulcommn.o lbfileio.o $(RES)
 LIBS =  -L"D:/ProgsNT/Dev-Cpp/lib"  
 INCS =  -I"D:/ProgsNT/Dev-Cpp/include" 
 CXXINCS =  -I"D:/ProgsNT/Dev-Cpp/lib/gcc/mingw32/4.3.0/include"  -I"D:/ProgsNT/Dev-Cpp/include/c++/4.3.0/backward"  -I"D:/ProgsNT/Dev-Cpp/include/c++/4.3.0/mingw32"  -I"D:/ProgsNT/Dev-Cpp/include/c++/4.3.0"  -I"D:/ProgsNT/Dev-Cpp/include" 
 BIN  = gwsaved.exe
-CXXFLAGS = $(CXXINCS)  
-CFLAGS = $(INCS)  
+CXXFLAGS = $(CXXINCS) -DBUILD_SINGLE  
+CFLAGS = $(INCS) -DBUILD_SINGLE  
 RM = rm -f
 
 .PHONY: all all-before all-after clean clean-custom
@@ -31,6 +31,9 @@ gwsaved.o: gwsaved.c
 
 bulcommn.o: bulcommn.c
 	$(CC) -c bulcommn.c -o bulcommn.o $(CFLAGS)
+
+lbfileio.o: lbfileio.c
+	$(CC) -c lbfileio.c -o lbfileio.o $(CFLAGS)
 
 gwsaved_private.res: gwsaved_private.rc 
 	$(WINDRES) -i gwsaved_private.rc --input-format=rc -o gwsaved_private.res -O coff 

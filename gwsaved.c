@@ -1,5 +1,5 @@
 /*
- * gwsaved.c   Bullfrog's Gene Wars savegame and levels editor
+ * gwsaved.c   Bullfrog's GeneWars savegame and levels editor
  */
 #include <stddef.h>
 #include <stdio.h>
@@ -278,7 +278,7 @@ int getUsr16bitUValueTo(int minVal,int maxVal,unsigned char *dest_ptr)
     int newval;
     if (!getUsrUValue(minVal,maxVal,&newval))
         return 0;
-    write_short_le_buf(dest_ptr,newval&65535);
+    write_int16_le_buf(dest_ptr,newval&65535);
 }
 
 int saveStructureToFile(char *samplename,char *src_ptr,unsigned long length)
@@ -670,7 +670,7 @@ int editLiveHybrids(SAVEDATA *save,unsigned int player_num)
       int hyb_num;
       for (hyb_num=0;hyb_num<MAX_CREATURES_ALIVE;hyb_num++)
       {
-        unsigned int lifespan=read_short_le_buf((unsigned char *)&(save->creaturedata[hyb_num].lifespan));
+        unsigned int lifespan=read_int16_le_buf((unsigned char *)&(save->creaturedata[hyb_num].lifespan));
         unsigned char owner=save->creaturedata[hyb_num].owner;
         if (owner==player_num)
         {
@@ -729,14 +729,14 @@ int editLiveHybrids(SAVEDATA *save,unsigned int player_num)
           int hnum;
           for (hnum=0;hnum<MAX_CREATURES_ALIVE;hnum++)
           {
-            unsigned int lifespan=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan));
+            unsigned int lifespan=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan));
             unsigned char owner=save->creaturedata[hnum].owner;
             if (owner==player_num)
             {
               if (lifespan>0)
               {
-                  unsigned int energy=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].energy_max));
-                  unsigned int health=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].health_max));
+                  unsigned int energy=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].energy_max));
+                  unsigned int health=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].health_max));
                   if (energy<150)
                       energy=2*energy;
                   else
@@ -753,10 +753,10 @@ int editLiveHybrids(SAVEDATA *save,unsigned int player_num)
                       health=4*health/3;
                   if ((energy>32767)||(energy<=0)) energy=32767;
                   if ((health>32767)||(health<=0)) health=32767;
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].energy_max),energy);
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].energy),energy);
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].health_max),health);
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].health),health);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].energy_max),energy);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].energy),energy);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].health_max),health);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].health),health);
                   hyb_improved++;
               }
             }
@@ -771,30 +771,30 @@ int editLiveHybrids(SAVEDATA *save,unsigned int player_num)
           int hnum;
           for (hnum=0;hnum<MAX_CREATURES_ALIVE;hnum++)
           {
-            unsigned int lifespan=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan));
+            unsigned int lifespan=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan));
             unsigned char owner=save->creaturedata[hnum].owner;
             if (owner==player_num)
             {
               if (lifespan>0)
               {
                   //max parameters
-                  unsigned int energy_max=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].energy_max));
-                  unsigned int health_max=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].health_max));
+                  unsigned int energy_max=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].energy_max));
+                  unsigned int health_max=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].health_max));
                   energy_max=2*energy_max/3;
                   health_max=2*health_max/3;
                   if ((energy_max>32767)||(energy_max<=0)) energy_max=1;
                   if ((health_max>32767)||(health_max<=0)) health_max=1;
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].energy_max),energy_max);
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].health_max),health_max);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].energy_max),energy_max);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].health_max),health_max);
                   //current parameters
-                  unsigned int energy=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].energy));
-                  unsigned int health=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].health));
+                  unsigned int energy=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].energy));
+                  unsigned int health=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].health));
                   energy=2*energy/3;
                   health=2*health/3;
                   if ((energy>energy_max)||(energy<=0)) energy=1;
                   if ((health>health_max)||(health<=0)) health=1;
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].energy),energy);
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].health),health);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].energy),energy);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].health),health);
                   hyb_improved++;
               }
             }
@@ -809,7 +809,7 @@ int editLiveHybrids(SAVEDATA *save,unsigned int player_num)
           int hnum;
           for (hnum=0;hnum<MAX_CREATURES_ALIVE;hnum++)
           {
-            unsigned int lifespan=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan));
+            unsigned int lifespan=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan));
             unsigned char owner=save->creaturedata[hnum].owner;
             if (owner==player_num)
             {
@@ -821,7 +821,7 @@ int editLiveHybrids(SAVEDATA *save,unsigned int player_num)
                   else
                       lifespan=3*lifespan/2;
                   if ((lifespan>32767)||(lifespan<=0)) lifespan=32767;
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan),lifespan);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan),lifespan);
                   hyb_improved++;
               }
             }
@@ -836,7 +836,7 @@ int editLiveHybrids(SAVEDATA *save,unsigned int player_num)
           int hnum;
           for (hnum=0;hnum<MAX_CREATURES_ALIVE;hnum++)
           {
-            unsigned int lifespan=read_short_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan));
+            unsigned int lifespan=read_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan));
             unsigned char owner=save->creaturedata[hnum].owner;
             if (owner==player_num)
             {
@@ -847,7 +847,7 @@ int editLiveHybrids(SAVEDATA *save,unsigned int player_num)
                   else
                       lifespan=2*lifespan/3;
                   if ((lifespan>32767)||(lifespan<=0)) lifespan=2;
-                  write_short_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan),lifespan);
+                  write_int16_le_buf((unsigned char *)&(save->creaturedata[hnum].lifespan),lifespan);
                   hyb_improved++;
               }
             }
@@ -883,7 +883,7 @@ int editHybrids(SAVEDATA_PLAYERINFO *player)
     int hyb_num;
     for (hyb_num=0;hyb_num<CREATURE_TYPES_COUNT;hyb_num++)
     {
-        unsigned long hybr_lvl=read_long_le_buf((unsigned char *)&(player->hybridlevel[hyb_num]));
+        unsigned long hybr_lvl=read_int32_le_buf((unsigned char *)&(player->hybridlevel[hyb_num]));
         int hybr_avaible=(hybr_lvl!=0);
         float hybr_lvl_percent=((float)hybr_lvl)/2048;
         int hybr_blessed=(unsigned char)(player->hybridblessed[hyb_num]);
@@ -913,10 +913,10 @@ int editHybrids(SAVEDATA_PLAYERINFO *player)
          int hnum;
          for (hnum=0;hnum<CREATURE_TYPES_COUNT;hnum++)
          {
-             unsigned long old_level=read_long_le_buf((unsigned char *)&(player->hybridlevel[hnum]));
+             unsigned long old_level=read_int32_le_buf((unsigned char *)&(player->hybridlevel[hnum]));
              if (old_level != 0)
              {
-                write_long_le_buf((unsigned char *)&(player->hybridlevel[hnum]),newval);
+                write_int32_le_buf((unsigned char *)&(player->hybridlevel[hnum]),newval);
                  printf("Value %7.3f set for %s.\n",newval_f,getHybridName(hnum));
              }
          }
@@ -928,7 +928,7 @@ int editHybrids(SAVEDATA_PLAYERINFO *player)
          int hnum;
          for (hnum=0;hnum<CREATURE_TYPES_COUNT;hnum++)
          {
-             unsigned long hybrid_level=read_long_le_buf((unsigned char *)&(player->hybridlevel[hnum]));
+             unsigned long hybrid_level=read_int32_le_buf((unsigned char *)&(player->hybridlevel[hnum]));
              if (hybrid_level>0)
              {
                  player->hybridblessed[hnum]=1;
@@ -978,13 +978,13 @@ int editHybrids(SAVEDATA_PLAYERINFO *player)
     if (newval==0)
         {
         disableCreatureBuilding(player,hyb_num);
-        write_long_le_buf((unsigned char *)&(player->hybridlevel[hyb_num]),0);
+        write_int32_le_buf((unsigned char *)&(player->hybridlevel[hyb_num]),0);
         player->hybridblessed[hyb_num]=0;
         printf("Hybrid %s set as unavaible to build.\n",getHybridName(hyb_num));
         return 0;
         }
     enableCreatureBuilding(player,hyb_num);
-    write_long_le_buf((unsigned char *)&(player->hybridlevel[hyb_num]),newval);
+    write_int32_le_buf((unsigned char *)&(player->hybridlevel[hyb_num]),newval);
     printf("Research level %7.3f set for %s.\n",newval_f,getHybridName(hyb_num));
     //Editing blessed flag
     printf("\nEditing hybrid blessed by ethereals flag for %s\n",getHybridName(hyb_num));
@@ -1058,7 +1058,7 @@ int editPlayer(SAVEDATA *save,int player_num)
   while (1)
   {
     SAVEDATA_PLAYERINFO *player=&(save->players[player_num]);
-    int money_val=read_short_le_buf((unsigned char *)&(player->goop));
+    int money_val=read_int16_le_buf((unsigned char *)&(player->goop));
     int special_num=player->specialysts_num;
     int level_num=player->level_num;
     printf("\n\nModifications for player %d:\n",player_num+1);
@@ -1373,8 +1373,8 @@ int editSavegame(char *savefname,char is_bare_map)
   fclose(savefp);
   while (1)
   {
-/*    int mapx=read_short_le_buf((unsigned char *)&(save_data->mapcoordx));
-    int mapy=read_short_le_buf((unsigned char *)&(save_data->mapcoordy));
+/*    int mapx=read_int16_le_buf((unsigned char *)&(save_data->mapcoordx));
+    int mapy=read_int16_le_buf((unsigned char *)&(save_data->mapcoordy));
     printf("User view map position %dx%d\n",mapx,mapy);*/
     printf("\nSELECT SAVE/LEVEL GAME OPERATION:\n");
     printf("Edit players:\n");
@@ -1382,7 +1382,7 @@ int editSavegame(char *savefname,char is_bare_map)
     for (plnum=0;plnum<PLAYERS_COUNT;plnum++)
     {
         SAVEDATA_PLAYERINFO *player=&(save_data->players[plnum]);
-        int money_val=read_short_le_buf((unsigned char *)&(save_data->players[plnum].goop));
+        int money_val=read_int16_le_buf((unsigned char *)&(save_data->players[plnum].goop));
         int special_num=player->specialysts_num;
         printf("%3d - \"%s\", Goop: %d, Specs: %d\n",plnum+1,&(player->playername),money_val,special_num);
 /*        printf("  Specialysts: ");
@@ -1530,7 +1530,7 @@ int editSavegame(char *savefname,char is_bare_map)
 
 int main(int argc, char *argv[])
 {
-    printf("\nBullfrog Engine Savegame editor for Gene Wars %s",VER_STRING);
+    printf("\nBullfrog Engine Savegame editor for GeneWars %s",VER_STRING);
     printf("\n    written by Tomasz Lis, 2000-2008");
     printf("\n-------------------------------\n");
     printf("Listing savegames...");

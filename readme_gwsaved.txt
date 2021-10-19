@@ -1,7 +1,7 @@
 Bullfrog Engine Savegame editor for GeneWars
 ------------------------------
 
-Copy the EXE file to Gene Wars directory and run it.
+Copy the EXE file to GeneWars directory and run it.
 If you want the game to be easier, try decreasing computer's
  specialysts ability and hybrid research level.
 

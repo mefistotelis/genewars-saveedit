@@ -1,0 +1,36 @@
+# Project: GWSavEd
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = gwsaved_private.res
+OBJ  = gwsaved.o bulcommn.o $(RES)
+LINKOBJ  = gwsaved.o bulcommn.o $(RES)
+LIBS =  -L"D:/ProgsNT/Dev-Cpp/lib"  
+INCS =  -I"D:/ProgsNT/Dev-Cpp/include" 
+CXXINCS =  -I"D:/ProgsNT/Dev-Cpp/lib/gcc/mingw32/4.3.0/include"  -I"D:/ProgsNT/Dev-Cpp/include/c++/4.3.0/backward"  -I"D:/ProgsNT/Dev-Cpp/include/c++/4.3.0/mingw32"  -I"D:/ProgsNT/Dev-Cpp/include/c++/4.3.0"  -I"D:/ProgsNT/Dev-Cpp/include" 
+BIN  = gwsaved.exe
+CXXFLAGS = $(CXXINCS)  
+CFLAGS = $(INCS)  
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before gwsaved.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o "gwsaved.exe" $(LIBS)
+
+gwsaved.o: gwsaved.c
+	$(CC) -c gwsaved.c -o gwsaved.o $(CFLAGS)
+
+bulcommn.o: bulcommn.c
+	$(CC) -c bulcommn.c -o bulcommn.o $(CFLAGS)
+
+gwsaved_private.res: gwsaved_private.rc 
+	$(WINDRES) -i gwsaved_private.rc --input-format=rc -o gwsaved_private.res -O coff 
